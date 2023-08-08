@@ -1,6 +1,6 @@
 <!-- app/views/users/confirmations/verify_otp.html.erb -->
-<!-- <%#= form_with(url: users_confirmations_verify_otp_path, method: :post) do |f| %>
+<%= form_with(url: users_confirmations_verify_otp_path, method: :post) do |f| %>
   <%#= f.hidden_field :email, value: @user.email %>
-  <%#= f.text_field :otp, placeholder: 'Enter OTP' %>
-  <%#= f.submit 'Verify OTP' %>
-<%# end %> -->
+  <%= f.text_field :otp, placeholder: 'Enter OTP' %>
+  <%= f.submit 'Verify OTP' %>
+<% end %>

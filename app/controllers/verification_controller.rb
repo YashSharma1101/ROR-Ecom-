@@ -1,0 +1,2 @@
+class VerificationController < ApplicationController
+end

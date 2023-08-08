@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Welcome to Our Website!</title>
+  <title>Welcome to Our Website Please Confirm Your OTP!</title>
 </head>
 <body>
   <h3>Welcome <%= @user.email %>!</h1>
-  <h3>OTP for Email Verification</h3>
-
-<!-- <h2>Your OTP code is: <%#= @user.otp %></h2> -->
+  <h2>Your OTP code is: <%= @user.otp %></h2>
 
 <%#= link_to 'Verify OTP', users_confirmations_verify_otp_url(otp: @user.otp) %>
 </body>

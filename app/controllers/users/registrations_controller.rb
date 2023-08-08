@@ -1,19 +1,11 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  #protected
-
+  # protected
   # def after_sign_up_path_for(resource)
-  #   #super(resource)
-  #   if !resource.email_verified?
-  #     return users_confirmations_verify_otp_path
-  #     #render "users/confirmations#verify_otp"
-  #   # else
-  #     #root_path
-  #     #users_confirmation_verify_otp_path
-  #     # "
-  #   end
+  #    new_user_registration_path
   # end
+  
 
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]

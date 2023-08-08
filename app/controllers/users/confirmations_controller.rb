@@ -44,7 +44,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   #   else
   #     respond_with(resource)
   #   end
-  # end
+  #   end
   # before_action :authenticate_user!
 
   # def verify_otp
