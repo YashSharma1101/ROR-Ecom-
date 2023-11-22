@@ -44,16 +44,7 @@ class Users::ConfirmationsController < Devise::ConfirmationsController
   #   else
   #     respond_with(resource)
   #   end
-  #   end
-  # before_action :authenticate_user!
 
-  # def verify_otp
-  #   if current_user.otp == params[:otp]
-  #     current_user.update(email_verified: true)
-  #     redirect_to root_path, notice: 'Email verified successfully.'
-  #   else
-  #     #redirect_to users_confirmation_verify_otp_url(otp: params[:otp]), alert: 'Invalid OTP.'
   #   end
-  # end
   
 end

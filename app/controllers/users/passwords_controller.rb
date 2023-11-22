@@ -1,6 +1,25 @@
 # frozen_string_literal: true
 
 class Users::PasswordsController < Devise::PasswordsController
+  def set_password
+    @user = current_user
+  end
+
+  def update_password
+    @user = current_user
+    if @user.update(password_params)
+      bypass_sign_in(@user) # Bypass reconfirmable to avoid email confirmation
+      redirect_to root_path, notice: "Password successfully set."
+    else
+      render :set_password
+    end
+  end
+
+  private
+
+  def password_params
+    params.require(:user).permit(:password, :password_confirmation)
+  end
   # GET /resource/password/new
   # def new
   #   super

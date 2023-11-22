@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+/*      background: linear-gradient(to bottom, cyan, white);*/
+      font-family: Arial, sans-serif;
+      margin-top: 70px;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    .container {
+      background: linear-gradient(to bottom, cyan , white);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+/*      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);*/
+      border-radius: 5px;
+    }
+
+    .order {
+      background: linear-gradient(to left, cyan, white);
+      border: 1px solid #ddd;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 5px;
+    }
+
+    .order h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .order p {
+      margin: 5px 0;
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0;
+    }
+
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #ddd;
+      padding: 10px 0;
+    }
+
+    .product-name {
+      flex: 2;
+    }
+
+    .product-quantity,
+    .product-price {
+      flex: 1;
+      text-align: center;
+    }
+
+    .total-price {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .status {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0066cc;
+    }
+    .flash-success {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #3498db;
+      font-size: 28px;
+    }
+  </style>
+  <title>Your Orders</title>
+</head>
+<body>
+  <% if session[:order_marked_delivered] %>
+  <div class="flash-success">
+    <h3 style="color:black; text-shadow: 0px 20px 0px rgba(0, 0, 0, 0.1);">Your Order with ID <%= @order.id%> has been  delivered.</h3>
+  </div>
+  <% session[:order_marked_delivered] = nil %>
+<% end %>
+
+  <div class="container">
+    <h1>Your Orders</h1>
+    <% if @current_user.orders.present?%>
+    <% @current_user.orders.each do |order| %>
+      <div class="order">
+        <h2>Order ID: <%= order.id %></h2>
+        <p class="status"><strong>Status:</strong> <%= order.status %></p>
+        <p><strong>Total Price: ₹</strong> <%= order.total_price %></p>
+        
+        <h3>Ordered Products:</h3>
+        <ul class="product-list">
+          <% order.order_items.each do |order_item| %>
+            <li class="product-item">
+              <div class="product-name"><%= order_item.product.name %></div>
+              <div class="product-quantity">Quantity: <%= order_item.quantity %></div>
+              <div class="product-price">₹<%= order_item.product.price * order_item.quantity %></div>
+            </li>
+          <% end %>
+        </ul>
+        
+        <p class="total-price"><strong>Total: ₹</strong> <%= order.total_price %></p>
+      </div>
+  <%# if @order.status == 'out_for_delivery' && !@order.delivered? %>
+  
+  <%# end %>
+    <% end %>
+    <% else %>
+     <p style="color: white;">You Have Not Placed Any Order Yet.</p>
+    <% end %>
+  </div>
+</body>
+</html>

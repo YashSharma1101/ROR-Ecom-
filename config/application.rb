@@ -13,6 +13,7 @@ module TestProject
     config.load_defaults 6.1
       Dotenv::Railtie.load
     config.active_job.queue_adapter = :sidekiq
+    
 
     # Configuration for the application, engines, and railties goes here.
     #

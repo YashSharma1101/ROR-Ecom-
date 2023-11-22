@@ -5,7 +5,8 @@ ActiveAdmin.register User do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :email, :encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at
+  menu priority: 1 
+  permit_params :name, :email, :encrypted_password, :reset_password_token, :reset_password_sent_at, :remember_created_at
   #
   # or
   #
@@ -14,11 +15,16 @@ ActiveAdmin.register User do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
-  # index do
-  #   selectable_column
-  #   id_column
-  #   column :email
-  #   actions if can? :manage, User # Only show actions if user can manage Users
-  # end
+  index do
+    selectable_column
+    id_column
+      column :name
+      column :email
+      column :email_verified
+      # column :provider
+      # column :otp
+      # column :uid
+    actions  #if can? :manage, User Only show actions if user can manage Users
+  end
   
 end

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to Our Website - Please Verify Your Email</title>
+  <style>
+    .alert {
+      padding: 10px;
+      background-color: #f2dede;
+      border: 1px solid #a94442;
+      color: #a94442;
+      margin-bottom: 15px;
+    }
+    .otp-container {
+      display: inline-block;
+      padding: 8px;
+      background-color: #f5f5f5;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .otp-code {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h3>Hello <%= @user.email %>!, Your Order is Out for delivery</h3>
+  <p>To recieve your order, please verify these OTP code:</p>
+
+  <div class="otp-container">
+    <span class="otp-code"><%= @user.otp %></span>
+  </div>
+
+  <p class="alert"><strong>Important:</strong> This OTP is valid for 15 minutes only. Please use it within this time frame.</p>
+
+  <p>If you didn't request this OTP, please disregard this email.</p>
+
+</body>
+</html>

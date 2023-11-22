@@ -1,0 +1,86 @@
+#Resend OTP Logic: 
+
+   1. user.rb
+      def active_for_authentication?
+         if super && email_verified?
+            true
+         elsif super && !email_verified? && otp_expired?
+            send_new_otp
+            false
+         else
+            false
+         end
+      end
+   2. routes.rb
+      namespace :users do
+         post 'verify_otp', to: 'sessions#verify_otp', as: 'verify_otp'
+      end
+
+   3. create a file in app/assests/javascripts/resend_otp.js
+      document.addEventListener('DOMContentLoaded', function() {
+        const resendButton = document.querySelector('#resend-otp-button');
+
+        if (resendButton) {
+          resendButton.addEventListener('click', function() {
+            // Disable the button on click
+            resendButton.disabled = true;
+            
+            // Enable the button after a timeout (e.g., 60 seconds)
+            setTimeout(function() {
+              resendButton.disabled = false;
+            }, 60000); // 60000 milliseconds = 60 seconds
+          });
+        }
+      });
+
+      4. application.html.erb
+      <head>
+         <%= javascript_include_tag 'resend_otp' %>
+      </head>
+
+      4. controller/users/sessions_controller.rb
+      def resend_otp
+          user = current_user
+          if user && !user.email_verified?
+            user.send_new_otp
+            flash[:notice] = "A new OTP has been sent to your email. Please check and verify."
+            redirect_to users_confirmations_verify_otp_path(email: user.email)
+          else
+            redirect_to root_path
+          end
+      end
+
+      5. verify_otp.html.erb
+
+      <%= button_to 'Resend OTP', users_resend_otp_path %>
+
+      6. add in menifest.js
+
+      //= link resend_otp.js
+
+Order OTP Verification
+
+
+# def verify_submit
+#   @order = current_user.orders.find(params[:id])
+#   if params[:otp] == session[:verification_otp]
+#     @order.update(status: :delivered)
+#     flash[:success] = "Order verified and status updated to Delivered."
+#     redirect_to order_path(@order)
+#   else
+#     flash[:error] = "Invalid OTP. Please try again."
+#     render '_verify_form'
+#   end
+# end
+
+
+Order from cart
+# if params[:from_cart]
+    #   # # Place order from cart
+    #   # order = current_user.orders.create(total_price: current_user.cart.total_price, status: :ordered)
+    #   # current_user.cart.cart_items.each do |cart_item|
+    #   #   order.order_items.create(product: cart_item.product, quantity: cart_item.quantity)
+    #   # end
+    #   # current_user.cart.destroy
+    #   # redirect_to order_path(order), notice: "Order placed successfully from cart."
+    # else

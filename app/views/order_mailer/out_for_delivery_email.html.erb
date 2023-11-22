@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+	</head>
+
+	<body>
+
+	  <h1>Verify Your Order</h1>
+	  
+	  <p>Hello <%= @user.name %>,</p>
+	  <p>Your order with ID <%= @order.id %> is almost ready for delivery.</p>
+	  <p>If you initiated this verification, please use the following link to verify your order:</p>
+	  <p><a href="<%= verify_order_url(@order) %>">Verify Your Order</a></p>
+	  <p>Thank you for shopping with us!</p>
+
+	</body>
+</html>

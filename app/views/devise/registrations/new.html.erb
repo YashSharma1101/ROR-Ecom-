@@ -1,29 +1,111 @@
-<h2>Sign up</h2>
+<!-- <!DOCTYPE html>
+<html> -->
+<head>
+<title>DemoProject</title>
+<link rel="shortcut icon"
+href="https://i.postimg.cc/gcKQJqW0/Sz-1-11.png" type="image/x-icon">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+<script
+src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+* /
+ .gradient-custom {
+text-align: center;
+background-image:
+url("https://th.bing.com/th/id/R.5ec3ddce652f26742b2e62a46f51f1e9?rik=z4p7PAT7dh%2bNlw&riu=http%3a%2f%2fwww.pptbackgrounds.org%2fthumb%2fblack-waves-powerpoint-backgrounds.jpg&ehk=acWO9SefVot%2fnfan77BWmiAMS1%2b570q8tPXuUvft3l8%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1");
+background-image:
+url("https://th.bing.com/th/id/OIP.EwaL4BZq8jeAIo2TT6GTpgHaEK?pid=ImgDet&rs=1");
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+}
+.alert {
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
+}
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+body {
+margin-top: 0px;
+text-align: center;
+background-image:
+url("https://th.bing.com/th/id/OIP.EwaL4BZq8jeAIo2TT6GTpgHaEK?pid=ImgDet&rs=1");
+background-repeat: no-repeat;
+background-attachment: fixed;
+background-size: cover;
+}
+.cust-btn {
+  background-color: #808080;
+    max-width: 30%;
+    height: 35px; 
+    border-radius: 5px !important; 
+    }
+.field-label{
+  max-width: 400px;
+}
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+</style>
+<!-- </head> -->
+<body>
+  <section class="vh-100 gradient-custom">
+    <% if resource.errors.any? %>
+    <div class="alert alert-danger">
+    <%= render "devise/shared/error_messages", resource: resource %>
   </div>
+  <% end %>
+    <div class="container py-5 h-90">
+      <div class="row d-flex justify-content-center align-items-center h-90">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-6">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-4 text-center">
+              <div class="mb-md-4 mt-md-4 pb-4">
+                <h2 class="fw-bold mb-3 text-uppercase">Sign Up</h2>
+                <p class="text-white-50 mb-4">Create an account on ShopZone to get started!</p>
+                <center>
+                  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+                    <div class="form-outline form-white mb-4">
+                      <%= f.label :name, class: "text-white-50 mb-1" %>
+                      <%= f.text_field :name, class: "form-control form-control-sm field-label", autofocus: true, autocomplete: "name", placeholder: "Enter Your Name" %>
+                    </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
+                    <div class="form-outline form-white mb-4">
+                      <%= f.label :email, class: "text-white-50 mb-1" %>
+                      <%= f.email_field :email, class: "form-control form-control-sm field-label", autofocus: true, autocomplete: "email", placeholder: "Enter Your Email" %>
+                    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+                    <div class="form-outline form-white mb-4">
+                      <%= f.label :password, class: "text-white-50 mb-1" %>
+                      <%= f.password_field :password, class: "form-control form-control-sm field-label", autocomplete: "new-password", placeholder: "Enter Your Password" %>
+                    </div>
 
-  <div class="actions">
-    <%= f.submit "Sign up" %>
-  </div>
-<% end %>
+                    <div class="form-outline form-white mb-5">
+                      <%= f.label :password_confirmation, class: "text-white-50 mb-1" %>
+                      <%= f.password_field :password_confirmation, class: "form-control form-control-sm field-label", autocomplete: "new-password", placeholder: "Confirm Your Password" %>
+                    </div>
 
-<%= render "devise/shared/links" %>
+                    <div>
+                      <%= f.submit "Sign up", class: "btn btn-outline-light btn-md px-5 cust-btn" %>
+                    </div>
+                  <% end %>
+                </center>
+                <div class="text-white-50 fw-bold mg-2">
+                  <%= render "devise/shared/links" %>
+                </div>
+                <p class="text-white-50 mb-1">Already have an account!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+

@@ -1,6 +1,101 @@
-<!-- app/views/users/confirmations/verify_otp.html.erb -->
-<%= form_with(url: users_confirmations_verify_otp_path, method: :post) do |f| %>
-  <%#= f.hidden_field :email, value: @user.email %>
-  <%= f.text_field :otp, placeholder: 'Enter OTP' %>
-  <%= f.submit 'Verify OTP' %>
-<% end %>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OTP Verification</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, white, cyan);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+/*      background: linear-gradient(to bottom, grey, white);*/
+      background: linear-gradient(to bottom, black, cyan);
+      max-width: 400px;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+    h1 {
+      color: #333;
+      align: center;
+      margin-bottom: 1.5rem;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .submit-button {
+      background-color: #333;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .flash-alert {
+      background-color: #f2dede;
+      border: 1px solid #a94442;
+      color: #a94442;
+      padding: 10px;
+      border-radius: 4px;
+      max-width: 80%;
+      text-align: center;
+      /*margin: 0 auto 1rem; /* Center the alert horizontally and add margin at the bottom */
+    }
+      .otp-container { 
+      background: linear-gradient(to right, white, cyan);
+      max-width: 400px;
+      padding: 2rem;
+      background-color: white;
+/*      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px auto; /* Add margin to center the container */
+    }
+        .otp-btn {
+      background-color: #808080;
+      margin-bottom: 25px;
+      max-width: 50%;
+      height: 35px; 
+      border-radius: 5px !important; 
+    }
+
+  </style>
+</head>
+<body>
+  <div class="otp-container">
+    <% if @show_alert %>
+    <div class="flash-alert"><%= flash[:alert] %></div>
+  <% end %>
+    <h1>OTP Verification</h1>
+    <%= form_with(url: users_verify_otp_path, method: :post) do |f| %>
+      <%= f.hidden_field :email, value: params[:email] %>
+      <%= f.text_field :otp, placeholder: 'Enter OTP', class: 'input-field' %>
+      <%= f.submit 'Verify OTP', class: 'btn btn-outline-light btn-block mt-3 otp-btn' %>
+    <% end %>
+    
+
+    <p style="font-size: 14px; color: #777;">
+      Please complete the OTP verification within 15 minutes. After this time, the OTP will expire, and you may need to sign up again.
+    </p>
+  </div>
+</body>
+</html>
