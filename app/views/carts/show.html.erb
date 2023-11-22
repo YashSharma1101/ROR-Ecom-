@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your Cart</title>
+  <style type="text/css">
+    body {
+/*      background-color: grey;*/
+/*      background: linear-gradient(to bottom, cyan, white);*/
+      margin-top: 70px;
+/*      background-color: #f8f9fa;*/
+      font-family: Arial, sans-serif;
+    }
+
+    .cart-container {
+      background: linear-gradient(to top, white, cyan);
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item {
+      background: linear-gradient(to left, cyan, white);
+      display: flex;
+      align-items: center;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 5px;
+/*      background-color: #ffffff;*/
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .cart-item-name {
+      font-size: 18px;
+      margin: 0 0 10px;
+      color: #333333;
+    }
+
+    .cart-item-quantity {
+      font-size: 16px;
+      margin: 0 0 10px;
+    }
+
+    .cart-item-price {
+      font-size: 18px;
+    }
+
+    .cart-total {
+      font-size: 20px;
+      text-align: right;
+      margin-top: 20px;
+      color: #333333;
+    }
+
+    .cart-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .cart-actions a {
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .cart-actions button {
+      margin-left: auto;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-controls button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      border: none;
+      background-color: #007bff;
+      color: #ffffff;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background-color 0.2s;
+    }
+
+    .quantity-controls button:hover {
+      background-color: #0056b3;
+    }
+
+    .remove-button {
+      background-color: #dc3545;
+      transition: background-color 0.2s;
+    }
+
+    .remove-button:hover {
+      background-color: #c82333;
+    }
+
+    .order-link {
+  border: 1px solid #000000;
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.continue-shopping-link {
+  align-items: center;
+  border: 1px solid #000000;
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <h1>Your Cart</h1>
+
+  <div class="cart-container">
+    <% total_price = 0 %>
+    <% if @cart_items.present? %>
+    <% @cart_items.each do |cart_item| %>
+      <div class="cart-item">
+        <div class="cart-item-details">
+          <h3 class="cart-item-name"><%= cart_item.product.name %></h3>
+          <%if cart_item.product.image.present?%>
+          <%= image_tag cart_item.product.image, alt: cart_item.product.name %>
+          <%end%>
+          <div class="quantity-controls">
+            <%= button_to "-", decrease_quantity_cart_path(cart_item_id: cart_item.id), method: :post, class: "btn btn-secondary" %>
+            <p class="cart-item-quantity">Quantity: <%= cart_item.quantity %></p>
+            <%= button_to "+", increase_quantity_cart_path(cart_item_id: cart_item.id), method: :post, class: "btn btn-secondary" %>
+          </div>
+          <p class="cart-item-price">Price: ₹<%= cart_item.product.price * cart_item.quantity %></p>
+        </div>
+        <div class="cart-item-buttons">
+          <%= button_to "Remove from Cart", remove_from_cart_cart_path(cart_item_id: cart_item.id), method: :delete, class: "btn btn-danger" %>
+        </div>
+      </div>
+      <% total_price += cart_item.product.price * cart_item.quantity %>
+    <% end %>
+
+    <p class="cart-total">Total Price: ₹<%= total_price %></p>
+
+    <div class="cart-actions">
+      <% if current_user.orders.any? %>
+  <div class="order-link">
+    <%= link_to "View Placed Order", order_path(current_user.orders.last), class: "nav-link", style: "color: #000000; font-family: Trebuchet MS; font-size: 20px; text-decoration: none;", "text-decoration": "none" %>
+  </div>
+<% end %>
+    <center><button id="checkout-button" class="btn btn-danger">Place Order</button></center>
+    <%#= button_to "Place Order", place_order_cart_path, method: :post, class: "btn btn-primary" %>
+    <div class="order-link">
+    <%= link_to "Continue Shopping", root_path, class: "nav-link", style: "color: #000000; font-family: Trebuchet MS; font-size: 20px; text-decoration: none;", "text-decoration": "none" %>
+	</div>
+    </div>
+    <% else %>
+     <center><p style="color: black; font-family: Trebuchet MS; font-size: 25px; margin-bottom: 40px;">Your Cart is Empty</p>
+     <div class="order-link">
+     <%= link_to "Continue Shopping", root_path, class: "nav-link", style: "color: #000000; font-family: Trebuchet MS; font-size: 20px; text-decoration: none;", "text-decoration": "none" %>
+     </center>
+ 	</div>
+    <% end %>
+  </div>
+</body>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  var stripe = Stripe('pk_test_51OERGBSDBGNNOPnKA24JYeFxkvCflnLs1NvE6p8FKYHXq3xp6jBaobG8gXcyPKrO0fTrilYQ9TuOyTKNrYZ0EdNa00ABisvmlU');
+  var checkoutButton = document.getElementById('checkout-button');
+  var csrfToken = document.querySelector("meta[name=csrf-token]").content;
+
+  checkoutButton.addEventListener('click', function () {
+    fetch('<%= place_order_cart_path %>', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken 
+      },
+      body: JSON.stringify({
+        // Include any additional parameters you need, such as product_id
+        // product_id: ...
+      })
+    })
+    .then(response => response.json())
+    .then(session => {
+      return stripe.redirectToCheckout({ sessionId: session.id });
+    })
+    .then(result => {
+      if (result.error) {
+        alert(result.error.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  });
+</script>
+</html>

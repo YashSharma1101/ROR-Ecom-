@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= @product.name %> - Product Details</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      margin-top: 50px;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      padding: 0;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .product-details {
+      margin-left: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .product-image {
+      margin-bottom: 25px;
+      max-width: 250px;
+      max-height: 250px;
+    }
+    .product-info {
+      flex: 1;
+      margin-left: 20px;
+    }
+    .product-name {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .product-price {
+      font-size: 20px;
+      color: #e74c3c;
+    }
+    .product-description {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .back-link {
+      display: block;
+      margin-top: 20px;
+    }
+    .custom-btn {
+      background-color: #808080;
+      max-width: 15%;
+      height: 35px; 
+      border-radius: 5px !important; 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><%= @product.name %> - Product Details</h1>
+    <p style="margin-bottom: 50px;">
+	    <div class="product-details">
+	      <div class="product-image">
+	        <% if @product.image.attached? %>
+	          <%= image_tag @product.image.variant(resize: "250x250") %>
+	        <% else %>
+	          <img src="https://blu-performance.com/wp-content/uploads/1/2016/03/Stock-Available-Soon-Tag.png"
+	              alt="No image attached" class="product-image">
+	        <% end %>
+	      </div>
+	    </div>
+	      <div class="product-info">
+	        <div class="product-name"><%= @product.name %></div>
+	        <div class="product-price">₹<%= @product.price %></div>
+		      <%= button_to "Add to Cart", add_to_cart_cart_path(product_id: @product.id),class: "btn btn-outline-light btn-block mt-3 custom-btn", method: :post %>
+	        <div class="product-description">
+	          <h4>Description:</h4>
+	          <p><%= @product.description %></p>
+	        </div>
+	        <%= link_to "Back to Products", :back, class: "back-link" %>
+
+	      </div>
+  	</p>
+  </div>
+
+</body>
+</html>

@@ -1,19 +1,28 @@
 class User < ApplicationRecord
-  validates :email, presence: true
-  validates :password, presence: true
 
+  validates :email, presence: true
+  #validates :password, presence: true
   
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, 
          #:confirmable,
          :omniauthable, omniauth_providers: [:github]
+  has_one :cart, dependent: :destroy
+  has_many :orders, dependent: :destroy
+
 
   after_create :send_welcome_email
+  before_create :generate_otp
 
+  def active_for_authentication?
+    super && email_verified?
+  end
+   
   def email_verified?
 
     email_verified
   end
+
   def valid_otp?(otp)
     return false if otp_expired?
     self.otp == otp
@@ -27,6 +36,12 @@ class User < ApplicationRecord
     otp_generated_at.nil? || otp_generated_at < 15.minutes.ago
   end
 
+  def send_new_otp
+    generate_otp
+    save
+  end
+
+
   def signed_up_via_github?
     provider == 'github'
   end
@@ -34,7 +49,6 @@ class User < ApplicationRecord
   def has_password?
     encrypted_password.present?
   end
-
 
   private
      def send_welcome_email
@@ -51,11 +65,10 @@ class User < ApplicationRecord
     user
   end
 
-  before_create :generate_otp
-
   def generate_otp
     self.otp = rand(100000..999999).to_s
     self.otp_generated_at = Time.now
     #save
   end
+
 end

@@ -1,189 +1,251 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Test Project</title>
-  <style>
-     .category {
-    margin-top: 2rem;
+  <title>ShopZone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script
+src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+  
+<style>
+
+  body {
+    margin-top: 100px;
+    background: linear-gradient(to right, white, cyan);
+    background-color: #f4f4f4;
   }
 
-  .category h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+  .navbar-nav a.nav-link {
+    padding: 10px 15px;
+    color: #ffffff;
   }
 
-  .product-list {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
+  .header {
+    padding-top: .5em;
+    padding-bottom: .5em;
+    border: 1px solid #a2a2a2;
+    background-color: #f4f4f4;
+    box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 5px;
+    position: fixed;
+    top: 0;
+    width: 100%;
   }
 
-  .product {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 1rem;
-    margin: 1rem;
+  .navbar-nav a.nav-link:hover {
+    color: #718daa;
+  }
+
+  .product-card {
+    /*    background: linear-gradient(to right, white ,cyan);*/
+    background: linear-gradient(to bottom, white ,cyan);
+    box-shadow: 0px 0px 14px 0px rgba(0, 0, 0, 0.50);
+    background-color: #FFFFFF;
+    border: 1px solid black;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    justify-content: space-between;
+    height: 525px; 
+  }
+
+ .product-image {
+    max-width: 150px;
+    max-height: 150px;
+    margin: 0 auto 10px;
   }
 
   .product-details {
     flex: 1;
-    text-align: center;
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
-  .product strong {
-    font-size: 1.2rem;
-    color: #333;
+  .product-name {
+    font-weight: bold;
+    margin-top: 5px; 
   }
 
-  .product p {
-    color: #666;
+  .product-description {
+    margin-top: 5px; 
   }
 
   .product-price {
-    color: brown;
-    font-weight: bold;
+    margin-top: 5px;
   }
 
-  .product-image {
-    margin-top: 1rem;
+  .product-buttons {
+  /*    background-color: black;*/
+    border: 1px solid black;
+    border-radius: 15px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px; 
+  }
+  .custom-add-to-cart-btn {
+    background-color: #808080;
+    height: 35px; 
+    border-radius: 5px !important; 
+  }
+  .custom-add-to-carts-btn {
+    height: 35px; 
+    font-size: 15px;
+    font-weight: 500;
+    background-color: white;
+    border: none;
+    border-radius: 5px;s
+    color: black;
+/*    font-weight: bold;*/
+    padding: 5px 0;
+    text-align: center;
+    display: block;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
+  }
+
+  .custom-add-to-carts-btn:hover {
+    height: 35px;
+    background-color: grey;
+    color: white; 
+    border-color: black;
+  }
+
+  h1{
+/*    font-family: monospace;*/
+/*   text-align: center;*/
+   font-weight: 400x;
+   margin-bottom: 10px;
+   font-size: 35px;
+   position: relative;
+   -webkit-text-stroke: 1px #3E6469;
+   color: lightseagreen;
+  }
+
+  h1::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 3px;
+    width: 0%;
+    background-color: lightseagreen;
+    transition: all ease 1s;
+  }
+
+  h1:hover::after {
+    width: 100%;
+  }
+
+  .input-group{
+    margin-left: 790px;
+    margin-top: 0px;
+    margin-bottom: 0px;
     text-align: center;
   }
 
-  .no-image {
-    color: #999;
+  .input-group:hover{
+    box-shadow: 5px 5px 3px black;
   }
 
-  img {
-    max-width: 100%;
-    height: auto;
+  .input-group-append{
+    background-color: lightseagreen;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 3px;
+    border: none;
+    color: #fff;
   }
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      text-align: center;
-      padding: 1rem 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-      background-color: white;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    form {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1rem;
-    }
-    input[type="text"] {
-      padding: 0.5rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    input[type="submit"] {
-      background-color: #333;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    h2 {
-      margin-top: 1.5rem;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      padding: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      margin-bottom: 1rem;
-      background-color: #fff;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    strong {
-      font-size: 1.2rem;
-    }
-    p {
-      margin-top: 0.5rem;
-      color: #666;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      margin-top: 1rem;
-    }
+  .input-group-append:hover{
+    border-radius: 1px !important;
+    box-shadow: 1px 1px 1px black !important;
+  }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Welcome <%= current_user.email %></h1>
-  </header>
   <div class="container">
-    <form action="<%= search_path %>" method="get">
-      <input type="text" name="query" value="<%= params[:query] %>" placeholder="Search products...">
-      <input type="submit" value="Search">
-    </form>
-
-    <% if @query.present? %>
-      <h2>Filtered Products</h2>
-      <ul>
-        <% @products.each do |product| %>
-          <li>
-            <strong><%= product.name %></strong>
-            <p><%= product.description %></p>
-            <p>Price: <%= product.price %></p>
-            <% if product.image.attached? %>
-              <%= image_tag product.image.variant(resize: "150x150") rescue nil %>
-            <% else %>
-              <p>No image attached</p>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
+    
+    <%= form_tag search_path, method: :get, class: "form-inline my-4" do %>
+      <div class="input-group">
+        <%= text_field_tag :query, params[:query], class: "form-control", placeholder: "Search products..." %>
+        <div class="input-group-append">
+          <%= submit_tag "Search", class: "btn btn-outline-secondary", style: "border-radius: 1px;"%>
+        </div>
+      </div>
+      <h1 style="margin-bottom: 10px">Hey! <%= current_user.name%></h1>
     <% end %>
 
+    <div class="row">
+      <% if @query.present? %>
+        <h2>Filtered Products</h2>
+        <% @products.each do |product| %>
+          <div class="col-md-4">
+            <div class="product-card">
+              <% if product.image.attached? %>
+                <%= image_tag product.image.variant(resize: "150x150"), class: "product-image" %>
+              <% else %>
+              <img class="card-img-top"
+              src="https://blu-performance.com/wp-content/uploads/1/2016/03/Stock-Available-Soon-Tag.png"
+              alt="No image attached" style="max-width: 150px; max-height: 150px; 
+              margin: 0 auto 10px;">
+              <% end %>
+               <h4 class="product-name"><%= product.name %></h4>
+              <p class="product-description"><strong>Description: </strong><%= truncate(product.description, length: 50) %><%= link_to "View More",product_path(product) %></p>
 
-    <!-- Rest of your code here -->
-  </div>
-  <% @categories.each do |category| %>
-  <div class="category">
-    <h2><%= category.name %></h2>
+              <p class="product-price"><strong>Price: </strong> ₹<%= product.price %></p>
+              <%= link_to "Buy Now", confirm_order_path(product_id: product.id), class: "btn btn-block custom-add-to-carts-btn", style: "text-decoration: none !important;"  "border: 1px solid black;"%>
 
-    <ul class="product-list">
-      <% category.products.each do |product| %>
-        <li class="product">
-          <div class="product-details">
-            <strong><%= product.name %></strong>
-            <p><%= product.description %></p>
-            <p class="product-price">Price: <%= product.price %></p>
+              <%#= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3" %>
+              <%= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3 custom-add-to-cart-btn" %>
+
+            </div>
           </div>
-          <div class="product-image">
-            <% if product.image.attached? %>
-              <%= image_tag product.image.variant(resize: "150x150") rescue nil %>
-            <% else %>
-              <p class="no-image">No image attached</p>
-            <% end %>
-          </div>
-        </li>
+        <% end %>
       <% end %>
-    </ul>
-  </div>
-<% end %>
 
+      <% @categories.each do |category| %>
+      <%if category.products.present?%>
+        <h2 style="margin-bottom: 30px;"><%= category.name %></h2>
+        <% category.products.each do |product| %>
+          <div class="col-md-4">
+            <div class="product-card">
+              <% if product.image.attached? %>
+                <%= image_tag product.image.variant(resize: "150x150"), class: "product-image"%>
+              <% else %>
+              <img class="card-img-top"
+              src="https://blu-performance.com/wp-content/uploads/1/2016/03/Stock-Available-Soon-Tag.png"
+              alt="No image attached" style="max-width: 150px; max-height: +
+
+              ; 
+              margin: 0 auto 10px;">
+              <% end %>
+              <h4 class="product-name"><%= product.name %></h4>
+              <p class="product-description"><strong>Description: </strong><%= truncate(product.description, length: 50) %><%= link_to "View More",product_path(product) %></p>
+
+              <p class="product-price"><strong>Price: </strong> ₹<%= product.price %></p>
+              <%= link_to "Buy Now", confirm_order_path(product_id: product.id), class: "btn btn-block custom-add-to-carts-btn", style: "text-decoration: none !important;"  "border: 1px solid black;"%>
+
+              <%#= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3" %>
+              <%= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3 custom-add-to-cart-btn" %>
+
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <% end %>
+    </div>
+  </div>
+  
 </body>
 </html>
+
+

@@ -1,5 +1,5 @@
 ActiveAdmin.register AdminUser do
-  permit_params :email, :password, :password_confirmation
+  permit_params :email, :password, :password_confirmation, :datetime
 
   index do
     selectable_column
@@ -8,6 +8,7 @@ ActiveAdmin.register AdminUser do
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
+    column :datetime, as: :date_time_range
     actions
   end
 
@@ -21,6 +22,9 @@ ActiveAdmin.register AdminUser do
       f.input :email
       f.input :password
       f.input :password_confirmation
+      # f.input :datetime, as: :string, :input_html => {:class => 'datepicker'}
+
+
     end
     f.actions
   end
