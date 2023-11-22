@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     end
   end
 
+
   get '/search', to: 'homes#search', as: 'search'
 
   resources :category
@@ -25,7 +26,6 @@ Rails.application.routes.draw do
   resources :products do
     post 'create_direct_order', on: :member
   end
-
 
   resource :cart, only: [:show] do
     post 'add_to_cart/:product_id', action: :add_to_cart, on: :member, as: :add_to_cart
@@ -47,5 +47,6 @@ Rails.application.routes.draw do
   get 'confirm_order/:product_id', to: 'orders#confirm_order', as: 'confirm_order'
   post 'place_order/:product_id', to: 'orders#place_order', as: 'place_order'
   get '/order_success/:product_id', to: 'orders#order_success', as: 'order_success'
+
 
 end
