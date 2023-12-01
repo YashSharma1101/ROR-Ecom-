@@ -73,10 +73,6 @@ gem "rspec-rails"
 gem "factory_bot_rails"
 gem "rails-controller-testing"
 gem 'stripe'
-
-
-
-
-
-
-
+gem 'chartkick'
+gem 'groupdate'
+gem 'paranoia', '~> 2.5'
