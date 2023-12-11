@@ -1,0 +1,32 @@
+<style>
+  .notification {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .notification-content {
+    flex-grow: 1;
+  }
+
+</style>
+  <% if @notifications.present? %>
+
+    <% @notifications.each do |notification| %>
+      <div class="notification<%= ' unread' if notification.unread? %>">
+        <div class="notification-content">
+          <%= notification.content %>
+        </div>
+        
+        <% if notification.unread? %>
+          <div class="mark-as-read-button">
+            <%= button_to 'Mark as Read', mark_as_read_notification_path(notification), method: :put, class: 'btn btn-primary', style: 'width: 125px' %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No new notifications!</p>
+  <% end %>
+

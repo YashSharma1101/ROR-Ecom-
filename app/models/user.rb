@@ -9,6 +9,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:github]
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
+  has_many :notifications
 
 
   after_create :send_welcome_email

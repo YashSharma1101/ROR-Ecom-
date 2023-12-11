@@ -28,7 +28,7 @@ class OrdersController < ApplicationController
     product = Product.find(params[:product_id])
     order = current_user.orders.create(total_price: product.price, status: :ordered)
     order.order_items.create(product: product, quantity: 1)
-
+    InvoiceJob.perform_later(order.id, current_user.email)
     redirect_to order_path(order), notice: "#{product.name} ordered successfully. Your Order ID is #{order.id}."
   end
 

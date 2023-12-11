@@ -71,6 +71,7 @@
 	    </div>
 	      <div class="product-info">
 	        <div class="product-name"><%= @product.name %></div>
+          <%= line_chart User.group_by_day(:created_at).count %>
 	        <div class="product-price">₹<%= @product.price %></div>
 		      <%= button_to "Add to Cart", add_to_cart_cart_path(product_id: @product.id),class: "btn btn-outline-light btn-block mt-3 custom-btn", method: :post %>
 	        <div class="product-description">
@@ -78,6 +79,7 @@
 	          <p><%= @product.description %></p>
 	        </div>
 	        <%= link_to "Back to Products", :back, class: "back-link" %>
+          
 
 	      </div>
   	</p>

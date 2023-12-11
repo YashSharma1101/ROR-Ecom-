@@ -75,4 +75,7 @@ gem "rails-controller-testing"
 gem 'stripe'
 gem 'chartkick'
 gem 'groupdate'
-gem 'paranoia', '~> 2.5'
+gem 'prawn'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+

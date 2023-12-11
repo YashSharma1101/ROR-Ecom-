@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_23_114723) do
+ActiveRecord::Schema.define(version: 2023_11_30_060650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,26 @@ ActiveRecord::Schema.define(version: 2023_08_23_114723) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "content", null: false
+    t.integer "status", default: 0
+    t.bigint "user_id"
+    t.bigint "order_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_notifications_on_order_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "order_histories", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.float "total_price"
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_order_histories_on_user_id"
+  end
+
   create_table "order_items", force: :cascade do |t|
     t.bigint "order_id", null: false
     t.bigint "product_id", null: false
@@ -105,8 +125,7 @@ ActiveRecord::Schema.define(version: 2023_08_23_114723) do
 
   create_table "orders", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.
-     "total_price"
+    t.float "total_price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status"
@@ -150,6 +169,9 @@ ActiveRecord::Schema.define(version: 2023_08_23_114723) do
   add_foreign_key "cart_items", "carts"
   add_foreign_key "cart_items", "products"
   add_foreign_key "carts", "users"
+  add_foreign_key "notifications", "orders"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "order_histories", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"

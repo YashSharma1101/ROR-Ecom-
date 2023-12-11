@@ -1,0 +1,22 @@
+<%# app/views/invoice.pdf.erb %>
+<%= logo = 'https://i.postimg.cc/gcKQJqW0/Sz-1-11.png' %>
+<%= company_name = 'ShopZone' %>
+<%= company_address = '22 A-10 Road, Ujjain (456001), MP, India' %>
+
+<%= client_info = User.find(order.user_id) %>
+<%= client_name = client_info.name %>
+<%= client_email = client_info.email %>
+<%= client_address = 'Address Indore, MP, India' %>
+
+<%= invoice_number = rand(10000..99999) %>
+<%= invoice_date = order.created_at.strftime('%B %e, %Y') %>
+
+<%= products = order.order_items.map(&:product) %>
+
+<%= total_price = order.total_price %>
+
+<%= amount_paid = order.total_price %>
+<%= amount_due = 0.00 %>
+
+<%= terms = 'Payable upon receipt' %>
+<%= notes = 'Thank you for doing business with Your Business Name' %>

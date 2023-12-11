@@ -203,13 +203,13 @@ src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.j
 
               <p class="product-price"><strong>Price: </strong> ₹<%= product.price %></p>
               <%= link_to "Buy Now", confirm_order_path(product_id: product.id), class: "btn btn-block custom-add-to-carts-btn", style: "text-decoration: none !important;"  "border: 1px solid black;"%>
-
-              <%#= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3" %>
+              
               <%= button_to "Add to Cart", add_to_cart_cart_path(product_id: product.id), method: :post, class: "btn btn-outline-light btn-block mt-3 custom-add-to-cart-btn" %>
 
             </div>
           </div>
         <% end %>
+      <% else%>
       <% end %>
 
       <% @categories.each do |category| %>

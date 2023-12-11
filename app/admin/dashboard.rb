@@ -51,7 +51,7 @@ ActiveAdmin.register_page "Dashboard" do
 
       column do
         panel "Overall Statistics" do
-          para "Total Users: #{User.count}"
+            para "Total Users: #{User.count}"
           para "Total Orders: #{OrderHistory.count+Order.count}"
           para "Total Revenue: ₹#{OrderHistory.sum(:total_price).to_i+Order.sum(:total_price).to_i}"
         end

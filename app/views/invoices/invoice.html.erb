@@ -1,0 +1,60 @@
+<!-- app/views/invoices/invoice.html.erb -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Add your CSS styling here */
+    body {
+      font-family: 'Helvetica', sans-serif;
+    }
+    .header {
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .section {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    .totals {
+      margin-top: 20px;
+    }
+    .footer {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="<%#= wicked_pdf_image_tag('logo.png') %>" alt="Logo" style="width: 75px;">
+    <br>
+    Your Business Name
+  </div>
+
+  <div class="section">
+    <h2>Client Information</h2>
+    <!-- Add client information here -->
+  </div>
+
+  <div class="section">
+    <h2>Invoice Details</h2>
+  </div>
+
+  <div class="section">
+    <h2>Product Details</h2>
+  </div>
+
+  <div class="totals">
+    <h2>Invoice Totals</h2>
+  </div>
+
+  <div class="footer">
+    <h2>Terms</h2>
+    <p>Payable upon receipt</p>
+
+    <h2>Notes</h2>
+    <p>Thank you for doing business with Your Business Name</p>
+  </div>
+</body>
+</html>

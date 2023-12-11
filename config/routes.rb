@@ -48,5 +48,13 @@ Rails.application.routes.draw do
   post 'place_order/:product_id', to: 'orders#place_order', as: 'place_order'
   get '/order_success/:product_id', to: 'orders#order_success', as: 'order_success'
 
-
+  resources :notifications do
+    collection do
+      delete :batch_delete
+      put :mark_all_as_read
+      delete 'delete_all_noti', to: 'notifications#delete_all_noti', as: :delete_all_noti
+    end
+    put :mark_as_read, on: :member
+  end
 end
+

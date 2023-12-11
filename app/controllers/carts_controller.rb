@@ -65,7 +65,7 @@ class CartsController < ApplicationController
     end
 
     cart.destroy 
-
+    InvoiceJob.perform_later(order.id, current_user.email)
     redirect_to order_path(order), notice: "Order placed successfully. Your Order ID is: #{order.id}."
   end
 end

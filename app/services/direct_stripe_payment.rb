@@ -12,7 +12,6 @@ class DirectStripePayment
           currency: 'inr',
           product_data: {
             name: @product.name,
-            images: [@product_image_url],
           },
           unit_amount: (@product.price * 100).to_i,
         },
