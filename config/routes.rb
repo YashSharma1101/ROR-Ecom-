@@ -47,7 +47,8 @@ Rails.application.routes.draw do
   get 'confirm_order/:product_id', to: 'orders#confirm_order', as: 'confirm_order'
   post 'place_order/:product_id', to: 'orders#place_order', as: 'place_order'
   get '/order_success/:product_id', to: 'orders#order_success', as: 'order_success'
-
+  post '/check_coupon/:product_id', to: 'orders#check_coupon', as: 'check_coupon'
+  post '/check_cart_coupon/:cart_id', to: 'carts#check_cart_coupon', as: 'check_cart_coupon'
   resources :notifications do
     collection do
       delete :batch_delete

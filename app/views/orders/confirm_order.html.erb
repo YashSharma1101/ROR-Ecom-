@@ -38,8 +38,8 @@
 
     .confirm-button {
       max-width: 30%;
-      height: 45px; 
-      border-radius: 5px !important; 
+      height: 45px;
+      border-radius: 5px !important;
       display: inline-block;
       padding: 10px 20px;
       background-color: #007bff;
@@ -55,6 +55,54 @@
     .confirm-button:hover {
       background-color: #0056b3;
     }
+
+    .coupon-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .coupon-label {
+      font-size: 18px;
+      color: #007bff;
+      cursor: pointer;
+    }
+
+    .coupon-input {
+      margin-left: 200px;
+      max-width: 50%;
+      display: none;
+      margin-top: 10px;
+    }
+
+    .coupon-input input[type="text"] {
+      padding: 5px;
+      border: 1px solid #ddd;
+      border-radius: 3px;
+    }
+
+    .coupon-input button {
+      padding: 5px 10px;
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .coupon-input button:hover {
+      background-color: #0056b3;
+    }
+
+    .remove-coupon,
+    .cancel-coupon {
+      color: #007bff;
+      cursor: pointer;
+    }
+
+    .message {
+      color: #ff0000;
+    }
   </style>
 </head>
 <script src="https://js.stripe.com/v3/"></script>
@@ -66,43 +114,94 @@
         <h2>Confirm Order</h2>
         <p><strong>Product Name:</strong> <%= @product.name %></p>
         <%= image_tag @product.image, alt: @product.name, class: "product-image" %>
-        <p><strong>Price:</strong> ₹<%= @product.price %></p>
+        <div id="priceDetails">
+          <p><strong>Price:</strong> ₹<%= @product.price %></p>
+          <% if @coupon_discount_percentage %>
+            <p><strong>Coupon Applied:</strong> <%= @coupon_code %></p>
+            <p><strong>Coupon Discount:</strong> <%= @coupon_discount_percentage %>%</p>
+            <% discounted_price = calculate_discounted_price(@product.price, @coupon_discount_percentage) %>
+            <p><strong>Discounted Price:</strong> ₹<%= discounted_price %></p>
+          <% end %>
+        </div>
+        <div class="coupon-container" id="couponContainer">
+          <% if @coupon_discount_percentage.blank? %>
+            <p class="coupon-label" onclick="showCouponInput()">Have a coupon? Apply Coupon</p>
+            <div class="coupon-input" id="couponInput">
+              <%= form_with(url: check_coupon_path(@product.id), method: :post, local: true) do |form| %>
+                <%= hidden_field_tag 'order[coupon_discount_percentage]', @coupon_discount_percentage %>
+                <%= form.text_field :coupon_code, id: 'coupon_code', placeholder: 'Enter coupon code' %>
+                <%= form.submit 'Apply Coupon' %>
+              <% end %>
+              <span class="cancel-coupon" onclick="cancelCoupon()">Cancel</span>
+            </div>
+          <% end %>
+          <% if @coupon_discount_percentage.present? %>
+            <p class="remove-coupon" onclick="removeCoupon()">Remove Coupon</p>
+
+          <% end %>
+        </div>
+        <div class="message" id="message">
+          <% if @message.present? %>
+            <p><%=@message%></p>
+          <% end %>
+        </div>
       </div>
     </center>
     <center>
-      <button id="checkout-button", class= "confirm-button" >Confirm Order</button>
+      <button id="checkout-button", class="confirm-button">Confirm Order</button>
+      <%=link_to "Back", root_path%>
     </center>
   </div>
 
   <script>
-  var stripe = Stripe('pk_test_51OERGBSDBGNNOPnKA24JYeFxkvCflnLs1NvE6p8FKYHXq3xp6jBaobG8gXcyPKrO0fTrilYQ9TuOyTKNrYZ0EdNa00ABisvmlU');
-  var checkoutButton = document.getElementById('checkout-button');
-  var csrfToken = document.querySelector("meta[name=csrf-token]").content; // Fetch CSRF token
+    function showCouponInput() {
+      document.querySelector('.coupon-label').style.display = 'none';
+      document.getElementById('couponInput').style.display = 'block';
+      document.querySelector('.cancel-coupon').style.display = 'inline';
+    }
 
-  checkoutButton.addEventListener('click', function () {
-    fetch('/place_order/<%= @product.id %>', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken 
-      },
-      body: JSON.stringify({
-        product_id: '<%= @product.id %>'
+    function cancelCoupon() {
+      document.querySelector('.coupon-label').style.display = 'block';
+      document.getElementById('couponInput').style.display = 'none';
+      document.querySelector('.cancel-coupon').style.display = 'none';
+    }
+
+    var stripe = Stripe('pk_test_51OERGBSDBGNNOPnKA24JYeFxkvCflnLs1NvE6p8FKYHXq3xp6jBaobG8gXcyPKrO0fTrilYQ9TuOyTKNrYZ0EdNa00ABisvmlU');
+    var checkoutButton = document.getElementById('checkout-button');
+    var csrfToken = document.querySelector("meta[name=csrf-token]").content; // Fetch CSRF token
+
+    checkoutButton.addEventListener('click', function () {
+      fetch('/place_order/<%= @product.id %>', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({
+          product_id: '<%= @product.id %>'
+        })
       })
-    })
-    .then(response => response.json())
-    .then(session => {
-      return stripe.redirectToCheckout({ sessionId: session.id });
-    })
-    .then(result => {
-      if (result.error) {
-        alert(result.error.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
+        .then(response => response.json())
+        .then(session => {
+          return stripe.redirectToCheckout({ sessionId: session.id });
+        })
+        .then(result => {
+          if (result.error) {
+            alert(result.error.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
     });
-  });
-</script>
+
+    function removeCoupon() {
+      // Implement logic to remove the coupon and display the original price
+      document.getElementById('priceDetails').innerHTML = '<p><strong>Price:</strong> ₹<%= @product.price %></p>';
+      document.getElementById('couponContainer').innerHTML = '<p class="coupon-label" onclick="showCouponInput()">Have a coupon? Apply Coupon</p><div class="coupon-input" id="couponInput"><%= form_with(url: check_coupon_path(@product.id), method: :post, local: true) do |form| %><%= hidden_field_tag 'order[coupon_discount_percentage]', @coupon_discount_percentage %><%= form.text_field :coupon_code, id: 'coupon_code', placeholder: 'Enter coupon code' %><%= form.submit 'Apply Coupon' %><% end %><span class="cancel-coupon" onclick="cancelCoupon()">Cancel</span></div>';
+      document.getElementById('message').innerHTML = '';
+      alert('Coupon removed!');
+    }
+  </script>
 </body>
 </html>
