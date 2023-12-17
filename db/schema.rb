@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_11_30_060650) do
+ActiveRecord::Schema.define(version: 2023_12_16_135816) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,13 @@ ActiveRecord::Schema.define(version: 2023_11_30_060650) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "coupons", force: :cascade do |t|
+    t.string "code"
+    t.integer "discount_percentage"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.string "content", null: false
     t.integer "status", default: 0
@@ -129,6 +136,12 @@ ActiveRecord::Schema.define(version: 2023_11_30_060650) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status"
+    t.float "order_price"
+    t.float "total_gst"
+    t.float "discount"
+    t.string "coupon_code"
+    t.integer "coupon_discount_percentage"
+    t.float "discounted_price"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
@@ -160,6 +173,8 @@ ActiveRecord::Schema.define(version: 2023_11_30_060650) do
     t.datetime "otp_generated_at"
     t.boolean "email_verified", default: false
     t.string "name"
+    t.text "address"
+    t.bigint "mobile_number"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -171,7 +186,6 @@ ActiveRecord::Schema.define(version: 2023_11_30_060650) do
   add_foreign_key "carts", "users"
   add_foreign_key "notifications", "orders"
   add_foreign_key "notifications", "users"
-  add_foreign_key "order_histories", "users"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "orders", "users"
