@@ -5,10 +5,12 @@ class Order < ApplicationRecord
   validate :valid_status_transition
   after_update :create_order_notification
   before_destroy :copy_to_order_history
+  before_destroy :delete_associated_notifications
 
   def self.total_price_over_time
     group_by_day(:created_at).sum(:total_price)
   end
+  
   def valid_status_transition
     if status_changed? && status_was.present?
       unless status_changed_from_cart?(status_was) && status_changed_to_ordered? ||
@@ -67,6 +69,10 @@ class Order < ApplicationRecord
       total_price: self.total_price,
       status: self.status
     )
+  end
+
+  def delete_associated_notifications
+    Notification.where(order_id: id).destroy_all
   end
 
 end

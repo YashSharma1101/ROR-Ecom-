@@ -1,17 +1,10 @@
 class User < ApplicationRecord
-
+  devise :database_authenticatable, :registerable,:recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:github], #:confirmable 
   validates :email, presence: true
-  #validates :password, presence: true
-  
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, 
-         #:confirmable,
-         :omniauthable, omniauth_providers: [:github]
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy
-  has_many :notifications
-
-
+  has_many :notifications, dependent: :destroy
   after_create :send_welcome_email
   before_create :generate_otp
 
@@ -20,7 +13,6 @@ class User < ApplicationRecord
   end
    
   def email_verified?
-
     email_verified
   end
 
@@ -42,7 +34,6 @@ class User < ApplicationRecord
     save
   end
 
-
   def signed_up_via_github?
     provider == 'github'
   end
@@ -52,11 +43,9 @@ class User < ApplicationRecord
   end
 
   private
-     def send_welcome_email
-       SendEmailsJob.perform_later(self)
-       #SendEmailsJob.set(wait: 1.minutes).perform_later(self)
-       #UserMailer.welcome_email(self).deliver_now       
-     end
+  def send_welcome_email
+    SendEmailsJob.perform_later(self)       
+  end
   
   def self.from_omniauth(auth)
     user = where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -69,7 +58,5 @@ class User < ApplicationRecord
   def generate_otp
     self.otp = rand(100000..999999).to_s
     self.otp_generated_at = Time.now
-    #save
   end
-
 end
