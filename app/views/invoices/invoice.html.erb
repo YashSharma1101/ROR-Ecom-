@@ -1,21 +1,32 @@
-<!-- app/views/invoices/invoice.html.erb -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    /* Add your CSS styling here */
     body {
       font-family: 'Helvetica', sans-serif;
     }
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
     .header {
       text-align: center;
-      font-size: 16px;
+      font-size: 20px;
       font-weight: bold;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
     .section {
       margin-top: 20px;
-      margin-bottom: 20px;
+    }
+    .table-responsive {
+      margin-top: 20px;
     }
     .totals {
       margin-top: 20px;
@@ -23,38 +34,153 @@
     .footer {
       margin-top: 20px;
     }
+    table {
+      width: 100%;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    .totals-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    .totals-table th, .totals-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .totals-table th {
+      background-color: #f2f2f2;
+    }
+    .totals-table td {
+      font-weight: bold;
+    }
   </style>
+  <title>Invoice - ShopZone</title>
 </head>
 <body>
-  <div class="header">
-    <img src="<%#= wicked_pdf_image_tag('logo.png') %>" alt="Logo" style="width: 75px;">
-    <br>
-    Your Business Name
-  </div>
+  <div class="invoice-container">
+    <div class="header">
+      <img src="https://i.postimg.cc/gcKQJqW0/Sz-1-11.png" alt="Logo" style="width: 75px;">
+      <br>
+      ShopZone
+    </div>
 
-  <div class="section">
-    <h2>Client Information</h2>
-    <!-- Add client information here -->
-  </div>
+    <div class="section">
+      <h2>Customer Information</h2>
+      <table>
+        <tr>
+          <td><strong>Name:</strong></td>
+          <td><%= @user.name %></td>
+        </tr>
+        <tr>
+          <td><strong>Email:</strong></td>
+          <td><%= @user.email %></td>
+        </tr>
+        <tr>
+          <td><strong>Contact:</strong></td>
+          <td><%= @user.mobile_number %></td>
+        </tr>
+        <tr>
+          <td><strong>Shipping Address:</strong></td>
+          <td><%= @user.address %></td>
+        </tr>
+      </table>
+    </div>
 
-  <div class="section">
-    <h2>Invoice Details</h2>
-  </div>
+    <div class="section">
+      <h2>Order Details</h2>
+      <table>
+        <tr>
+          <td><strong>Order Number:</strong></td>
+          <td><%= @order.id + 999 %></td>
+        </tr>
+        <tr>
+          <td><strong>Order Date:</strong></td>
+          <td><%= @order.created_at.strftime('%B %e, %Y') %></td>
+        </tr>
+        <tr>
+          <td><strong>Status:</strong></td>
+          <td><%= @order.status || 'N/A' %></td>
+        </tr>
+        <tr>
+          <td><strong>Coupon Discount Percentage:</strong></td>
+          <td><%= @order.coupon_discount_percentage || 0 %>%</td>
+        </tr>
+        <tr>
+          <td><strong>Discounted Price (excl. tax):</strong></td>
+          <td>₹<%= @order.discounted_price || 0 %></td>
+        </tr>
+      </table>
+    </div>
 
-  <div class="section">
-    <h2>Product Details</h2>
-  </div>
+    <div class="section">
+      <h2>Product Details</h2>
+      <div class="table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity</th>
+              <th>Unit Price (₹)</th>
+              <th>Total (₹)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @order.order_items.each do |item| %>
+              <tr>
+                <td><%= item.product.name %></td>
+                <td><%= item.quantity %></td>
+                <td>₹<%= item.product.price %></td>
+                <td>₹<%= item.quantity * item.product.price %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <div class="totals">
-    <h2>Invoice Totals</h2>
-  </div>
+    <div class="totals">
+      <h2>Order Totals</h2>
+      <table class="totals-table">
+        <tr>
+          <th>Total Price (Original)</th>
+          <td>₹<%= @order.order_price || 0 %></td>
+        </tr>
+        <tr>
+          <th>Discount Amount</th>
+          <td>₹<%= @order.discount || 0 %></td>
+        </tr>
+        <tr>
+          <th>Tax (GST 18%)</th>
+          <td>₹<%= @order.total_gst || 0 %></td>
+        </tr>
+        <tr>
+          <th>Subtotal</th>
+          <td>₹<%= @order.total_price || 0 %></td>
+        </tr>
+        <tr>
+          <th>Total Amount Paid</th>
+          <td>₹<%= @order.total_price || 0 %></td>
+        </tr>
+        <tr>
+          <th>Amount Due</th>
+          <td>₹0</td>
+        </tr>
+      </table>
+    </div>
 
-  <div class="footer">
-    <h2>Terms</h2>
-    <p>Payable upon receipt</p>
-
-    <h2>Notes</h2>
-    <p>Thank you for doing business with Your Business Name</p>
+    <div class="footer">
+      <h2>Notes</h2>
+      <p>Thank you for shopping with ShopZone! If you have any questions, please contact our customer support.</p>
+    </div>
   </div>
 </body>
 </html>
