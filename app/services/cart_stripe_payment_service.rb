@@ -6,7 +6,6 @@ class CartStripePaymentService
 	def create_cart_checkout_session(success_url, cancel_url)
     if @coupon_discount_percentage
       line_items = @cart.cart_items.map do |cart_item|
-        byebug
         discounted_amount = cart_item.product.price*(1 - @coupon_discount_percentage.to_f/100)
         gst = discounted_amount*0.18.round(2)
         {

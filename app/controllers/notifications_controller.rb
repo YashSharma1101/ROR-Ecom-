@@ -10,14 +10,12 @@ class NotificationsController < ApplicationController
   end
 
   def destroy
-  	byebug
   	notification = Notification.find(params[:id])
   	notification.destroy
   	redirect_back(fallback_location: root_path)
   end
 
   def delete_all_noti
-  	byebug
   	current_user.Notification.destroy.all
   	redirect_back(fallback_location: root_path)#, notice: "#{current_user.name} All notifications deleted successfully."
   end

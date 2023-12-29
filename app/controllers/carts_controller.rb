@@ -72,8 +72,6 @@ class CartsController < ApplicationController
   end
 
   def order_success
-    byebug
-
     # cart = current_user.cart
     # gst = (cart.total_price * 0.18).round(2)
     # total_price = cart.total_price + gst
@@ -139,7 +137,6 @@ class CartsController < ApplicationController
   end
 
   def calculate_cart_discounted_price(original_price, discount_percentage)
-    byebug
     discounted_price = original_price * (1 - discount_percentage / 100.0)
     discounted_price.round(2)
   end

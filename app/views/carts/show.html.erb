@@ -158,7 +158,6 @@
             <!-- Display text message and Apply Coupon button -->
             <p class="coupon-label" onclick="showCouponInput()">Have a coupon? Apply Coupon</p>
             <div class="coupon-input" id="couponInput">
-               <%#byebug %>
               <%= form_with(url: check_cart_coupon_path(current_user.cart.id), method: :post, local: true) do |form| %>
                 <%= hidden_field_tag 'order[coupon_discount_percentage]', @coupon_discount_percentage %>
                 <%= form.text_field :coupon_code, id: 'coupon_code', placeholder: 'Enter coupon code' %>
