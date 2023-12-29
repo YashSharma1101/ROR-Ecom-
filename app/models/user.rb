@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,:recoverable, :rememberable, :validatable,
-         :omniauthable, omniauth_providers: [:github], #:confirmable 
+         :omniauthable, omniauth_providers: [:github] #:confirmable 
   validates :email, presence: true
   has_one :cart, dependent: :destroy
   has_many :orders, dependent: :destroy

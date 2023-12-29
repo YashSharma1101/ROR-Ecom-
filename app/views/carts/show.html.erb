@@ -7,7 +7,6 @@
 /*      background-color: grey;*/
 /*      background: linear-gradient(to bottom, cyan, white);*/
       margin-top: 70px;
-/*      background-color: #f8f9fa;*/
       font-family: Arial, sans-serif;
     }
 
@@ -58,8 +57,8 @@
     }
 
     .cart-total {
-      font-size: 20px;
-      text-align: right;
+      font-size: 18px;
+      text-align: center;
       margin-top: 20px;
       color: #333333;
     }
@@ -154,9 +153,50 @@
       </div>
       <% total_price += cart_item.product.price * cart_item.quantity %>
     <% end %>
-
-    <p class="cart-total">Total Price: ₹<%= total_price %></p>
-
+    <div class="coupon-container" id="couponContainer">
+          <% if @coupon_discount_percentage.blank? %>
+            <!-- Display text message and Apply Coupon button -->
+            <p class="coupon-label" onclick="showCouponInput()">Have a coupon? Apply Coupon</p>
+            <div class="coupon-input" id="couponInput">
+               <%#byebug %>
+              <%= form_with(url: check_cart_coupon_path(current_user.cart.id), method: :post, local: true) do |form| %>
+                <%= hidden_field_tag 'order[coupon_discount_percentage]', @coupon_discount_percentage %>
+                <%= form.text_field :coupon_code, id: 'coupon_code', placeholder: 'Enter coupon code' %>
+                <%= form.submit 'Apply Coupon' %>
+              <% end %>
+              <span class="cancel-coupon" onclick="cancelCoupon()">Cancel</span>
+            </div>
+          <% end %>
+          <div class="message" id="message">
+          <% if @message.present? %>
+            <p class="cart-total"><%=@message%></p>
+          <% end %>
+        </div>
+  </div>
+    <p class="cart-total">
+    <% discounted_price = total_price %>
+    <% if @coupon_discount_percentage %> 
+      <%@coupon_code = Coupon.find_by(code: params[:coupon_code])&.validity_time%>
+      <%end_of_day = @coupon_code%>
+      <%#end_of_day = Time.current.end_of_day - 0.5.hours%>
+        <%time_remaining = end_of_day - (Time.current + 7.50.hours)%>
+        <% discounted_price = calculate_discounted_price(total_price, @coupon_discount_percentage)%>
+        <strong><del>₹<%= total_price%> + 18% GST = ₹<%=total_price + (total_price*0.18) %></del></br>Buy Now All At  ₹<%= discounted_price %> + 18%GST = ₹<%= (discounted_price + discounted_price*0.18).round(2) %></strong>
+        <%if format_time_duration(time_remaining).to_i > 1%>
+        </br><strong>Hurry up! coupon valid only for <span id="timer"><%= format_time_duration(time_remaining) %></span></strong>
+        <%end%>
+    <%else%>
+    <%end_of_day = Time.current.end_of_day%>
+       <%time_remaining = end_of_day - (Time.current + 5.50.hours)%>
+      Hurry up! Buy within: <span id="timer"><%= format_time_duration(time_remaining) %></span></br>
+      To Get All Products At ₹<%=(discounted_price*0.02).round%> off: <del>₹<%= total_price %></del>
+       ₹<%= discounted_price - (discounted_price*0.02).round %> + 18%GST = ₹<%= discounted_price + discounted_price*0.18 -(discounted_price*0.02).round %>
+    <% end %>
+    </p>
+    <% if @coupon_discount_percentage.present? %>
+      <p class="remove-coupon" onclick="removeCoupon()">Remove Coupon</p>
+    <% end %>
+ 
     <div class="cart-actions">
       <% if current_user.orders.any? %>
   <div class="order-link">
@@ -176,13 +216,50 @@
      </center>
  	</div>
     <% end %>
-  </div>
+    
 </body>
 <script src="https://js.stripe.com/v3/"></script>
 <script>
+  function showCouponInput() {
+      document.querySelector('.coupon-label').style.display = 'none';
+      document.getElementById('couponInput').style.display = 'block';
+      document.querySelector('.cancel-coupon').style.display = 'inline';
+    }
+
+    function cancelCoupon() {
+      document.querySelector('.coupon-label').style.display = 'block';
+      document.getElementById('couponInput').style.display = 'none';
+      document.querySelector('.cancel-coupon').style.display = 'none';
+    }
+
+function removeCoupon() {
+  // Implement logic to remove the coupon and display the original price
+  var priceDetailsElement = document.getElementById('priceDetails');
+  var couponContainerElement = document.getElementById('couponContainer');
+  var messageElement = document.getElementById('message');
+
+  if (priceDetailsElement) {
+    priceDetailsElement.innerHTML = '<p><strong>Price:</strong> ₹<%= @total_price %></p>';
+  }
+
+  if (couponContainerElement) {
+    couponContainerElement.innerHTML = '<p class="coupon-label" onclick="showCouponInput()">Have a coupon? Apply Coupon</p><div class="coupon-input" id="couponInput"><%= form_with(url: check_cart_coupon_path(@cart.id), method: :post, local: true) do |form| %><%= hidden_field_tag 'order[coupon_discount_percentage]', @coupon_discount_percentage %><%= form.text_field :coupon_code, id: 'coupon_code', placeholder: 'Enter coupon code' %><%= form.submit 'Apply Coupon' %><% end %><span class="cancel-coupon" onclick="cancelCoupon()">Cancel</span></div>';
+  }
+
+  if (messageElement) {
+    messageElement.innerHTML = '';
+  }
+
+  // Redirect to the same page without coupon parameters
+  window.location.href = window.location.pathname;
+}
+
+
   var stripe = Stripe('pk_test_51OERGBSDBGNNOPnKA24JYeFxkvCflnLs1NvE6p8FKYHXq3xp6jBaobG8gXcyPKrO0fTrilYQ9TuOyTKNrYZ0EdNa00ABisvmlU');
   var checkoutButton = document.getElementById('checkout-button');
   var csrfToken = document.querySelector("meta[name=csrf-token]").content;
+  var couponDiscountPercentage = <%= @coupon_discount_percentage || 'null' %>;
+  var finalPrice = <%= total_price || "null" %>;
 
   checkoutButton.addEventListener('click', function () {
     fetch('<%= place_order_cart_path %>', {
@@ -192,8 +269,8 @@
         'X-CSRF-Token': csrfToken 
       },
       body: JSON.stringify({
-        // Include any additional parameters you need, such as product_id
-        // product_id: ...
+        coupon_discount_percentage: couponDiscountPercentage,
+        total_price: finalPrice
       })
     })
     .then(response => response.json())
@@ -209,5 +286,26 @@
       console.error('Error:', error);
     });
   });
+
+
+   function updateTimer() {
+    var currentTime = new Date();
+    var endOfDay = new Date('<%= end_of_day.strftime('%Y-%m-%dT%H:%M:%S') %>'); // Use Rails datetime format
+    var timeRemaining = endOfDay - currentTime;
+
+    // Update the timer display
+    var hours = Math.floor(timeRemaining / (60 * 60 * 1000));
+    var minutes = Math.floor((timeRemaining % (60 * 60 * 1000)) / (60 * 1000));
+    var seconds = Math.floor((timeRemaining % (60 * 1000)) / 1000);
+
+    document.getElementById('timer').innerText = 
+      ("0" + hours).slice(-2) + ":" +
+      ("0" + minutes).slice(-2) + ":" +
+      ("0" + seconds).slice(-2);
+  }
+
+  // Initial update and set interval for periodic updates
+  updateTimer();
+  setInterval(updateTimer, 1000); // Update every second
 </script>
 </html>

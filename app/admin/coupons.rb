@@ -5,7 +5,7 @@ ActiveAdmin.register Coupon do
   #
   # Uncomment all parameters which should be permitted for assignment
   #
-  # permit_params :code, :discount_percentage
+  permit_params :code, :discount_percentage, :validity_time
   #
   # or
   #

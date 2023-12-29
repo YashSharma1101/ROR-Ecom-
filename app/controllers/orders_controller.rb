@@ -27,7 +27,6 @@ class OrdersController < ApplicationController
       discounted_price = calculate_discounted_price(product.price, coupon_discount_percentage)
       gst = (discounted_price.to_i * 0.18).round(2)
       final_price = (discounted_price+gst).round(2).to_i
-      byebug
       stripe_service = DirectStripePayment.new(product, product_image_url, final_price)
     else
       discounted_price = product.price

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_12_16_135816) do
+ActiveRecord::Schema.define(version: 2023_12_26_123349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(version: 2023_12_16_135816) do
     t.integer "discount_percentage"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "validity_time"
   end
 
   create_table "notifications", force: :cascade do |t|

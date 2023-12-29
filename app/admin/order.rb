@@ -1,5 +1,5 @@
 ActiveAdmin.register Order do
-  permit_params :status
+  permit_params :status, :total_price, :discount_price
   menu priority: 4
 
   index do
@@ -16,19 +16,23 @@ ActiveAdmin.register Order do
   form do |f|
     f.inputs "Order Details" do
       f.input :status, as: :select, collection: Order.statuses.keys
+      # f.input :total_price, input_html: { oninput: 'updateGst(this.value)' }
+      f.input :order_price
+      f.input :total_gst
+      # f.input :total_gst, input_html: { readonly: true, disabled: true }
+      # f.input :calculate_total_gst, label: false, input_html: { type: 'button', value: 'Calculate GST', id: 'calculate-gst-button' }
     end
     f.actions
+     f.semantic_errors
   end
 
   controller do
-
-      def update
-        super
-        if resource.saved_change_to_status?(to: 'out_for_delivery')
-          OrderMailer.out_for_delivery_email(resource.user, resource).deliver_now
-        end
+    def update
+      super
+      if resource.saved_change_to_status?(to: 'out_for_delivery')
+        OrderMailer.out_for_delivery_email(resource.user, resource).deliver_now
       end
-
+    end
   end
 
 #   member_action :mark_as_out_for_delivery, method: :put do

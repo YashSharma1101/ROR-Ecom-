@@ -97,15 +97,19 @@
       <div class="order">
         <h2>Order ID: <%= order.id %></h2>
         <p class="status"><strong>Status:</strong> <%= order.status %></p>
-        <p><strong>Total Price: ₹</strong> <%= order.total_price %></p>
-        
+        <li class="product-item">
+        <%if order.coupon_code.present?%>
+        <p><strong>Original Price: ₹</strong> <%= order.order_price %></p>
+        <%end%>
+        <p><strong>Total Paid: ₹</strong> <%= order.total_price %></p>
+        </li>
         <h3>Ordered Products:</h3>
         <ul class="product-list">
           <% order.order_items.each do |order_item| %>
             <li class="product-item">
               <div class="product-name"><%= order_item.product.name %></div>
               <div class="product-quantity">Quantity: <%= order_item.quantity %></div>
-              <div class="product-price">₹<%= order_item.product.price * order_item.quantity %></div>
+              <div class="product-price">₹<%= order_item.order.total_price * order_item.quantity %></div>
             </li>
           <% end %>
         </ul>
