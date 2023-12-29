@@ -1,7 +1,7 @@
 require_relative "boot"
-require 'dotenv-rails'
-# require 'dotenv/rails-now'
-
+# require 'dotenv/rai-now'
+require 'dotenv'
+Dotenv.load
 
 require "rails/all"
 
@@ -26,3 +26,5 @@ module TestProject
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+# require 'dotenv-rails'
