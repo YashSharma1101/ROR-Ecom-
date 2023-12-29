@@ -65,8 +65,7 @@ gem 'activeadmin'
 gem 'sidekiq'
 gem 'redis'
 gem 'twilio-ruby'
-# gem 'dotenv-rails', groups: [:development, :test]
-gem 'dotenv-rails', require: 'dotenv/rails-now', groups: [:development, :test]
+gem 'dotenv-rails', groups: [:development, :test]
 gem 'cancancan'
 gem 'omniauth-github', '~> 2.0.0'
 gem 'omniauth-rails_csrf_protection'

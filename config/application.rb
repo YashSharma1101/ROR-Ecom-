@@ -1,8 +1,4 @@
 require_relative "boot"
-# require 'dotenv/rai-now'
-require 'dotenv'
-Dotenv.load
-
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
@@ -13,9 +9,8 @@ module TestProject
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-      Dotenv::Railtie.load
-   config.active_job.queue_adapter = :sidekiq
-   config.middleware.use WickedPdf::Middleware
+    config.active_job.queue_adapter = :sidekiq
+    config.middleware.use WickedPdf::Middleware
 
     # Configuration for the application, engines, and railties goes here.
     #
@@ -24,7 +19,8 @@ module TestProject
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # Load dotenv
+    Dotenv::Railtie.load
   end
 end
-
-# require 'dotenv-rails'
