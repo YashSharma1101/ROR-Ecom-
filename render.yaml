@@ -1,0 +1,23 @@
+databases:
+  - name: ShopZone
+    databaseName: shopzone
+    user: ShopZone
+    plan: free
+
+services:
+  - type: web
+    name: ShopZone
+    runtime: ruby
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    # preDeployCommand: "./bin/rails db:migrate" # preDeployCommand only available on paid instance types
+    startCommand: "./bin/rails server"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ShopZone
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
+      - key: WEB_CONCURRENCY
+        value: 2 # sensible default
