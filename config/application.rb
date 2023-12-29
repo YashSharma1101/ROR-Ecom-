@@ -21,6 +21,6 @@ module TestProject
     # config.eager_load_paths << Rails.root.join("extras")
 
     # Load dotenv
-    Dotenv::Railtie.load
+    # Dotenv::Railtie.load
   end
 end
