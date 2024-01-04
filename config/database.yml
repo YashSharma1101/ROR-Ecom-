@@ -53,6 +53,6 @@ test:
   username: postgres
   password: postgres
   port: 5432
-# production:
-#   <<: *default
-#   database: voltup_production
+production:
+  <<: *default
+  url: <%= ENV['DATABASE_URL'] %>
