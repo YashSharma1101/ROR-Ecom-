@@ -1,6 +1,7 @@
 class InvoiceMailer < ApplicationMailer
   def send_invoice(order, user_email)
-    @order = order
+    @order = Order.find(order)
+    # @order = order
     @user = User.find(@order.user_id)
     html_content = render_to_string(template: 'invoices/invoice')
     pdf = WickedPdf.new.pdf_from_string(html_content)

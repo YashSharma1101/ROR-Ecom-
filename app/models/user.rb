@@ -44,7 +44,8 @@ class User < ApplicationRecord
 
   private
   def send_welcome_email
-    SendEmailsJob.perform_later(self)       
+    UserMailer.welcome_email(self).deliver_now
+    # SendEmailsJob.perform_later(self)       
   end
   
   def self.from_omniauth(auth)

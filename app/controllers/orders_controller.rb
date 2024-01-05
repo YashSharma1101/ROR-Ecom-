@@ -65,7 +65,8 @@ class OrdersController < ApplicationController
     coupon_discount_percentage: coupon_discount_percentage
   )
     order.order_items.create(product: product, quantity: 1)
-    InvoiceJob.perform_later(order.id, current_user.email)
+    InvoiceMailer.send_invoice(order.id, current_user.email).deliver_now
+    # InvoiceJob.perform_later(order.id, current_user.email)
     session[:coupon_code] = nil
     session[:coupon_discount_percentage] = nil
     redirect_to order_path(order), notice: "#{product.name} ordered successfully. Your Order ID is #{order.id}."

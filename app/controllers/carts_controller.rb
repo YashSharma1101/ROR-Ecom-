@@ -103,7 +103,8 @@ class CartsController < ApplicationController
     end
 
     cart.destroy 
-    InvoiceJob.perform_later(order.id, current_user.email)
+    InvoiceMailer.send_invoice(order.id, current_user.email).deliver_now
+    # InvoiceJob.perform_later(order.id, current_user.email)
     session[:coupon_discount_percentage] = nil
     session[:coupon_code] = nil 
     redirect_to order_path(order), notice: "Order placed successfully. Your Order ID is: #{order.id}."
