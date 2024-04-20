@@ -1,6 +1,6 @@
-# SHOPZONE - Your Ultimate Online Shopping Project
+# ROR-Ecom - Your Ultimate Online Shopping Project
 
-Welcome to **SHOPZONE**, an online e-commerce shopping project built on Ruby On Rails. SHOPZONE is fully functional and designed to offer a seamless online shopping experience.
+Welcome to **ROR-Ecom**, an online e-commerce shopping project built on Ruby On Rails. ROR-Ecom is fully functional and designed to offer a seamless online shopping experience.
 
 ## Features
 
@@ -25,12 +25,12 @@ Welcome to **SHOPZONE**, an online e-commerce shopping project built on Ruby On 
 ### Sign-Up Page:
 ![Sign-Up Page](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/a7ed88a6-0c81-4937-aa0a-44a66e3b6582)
 
-The Sign-Up page allows users to create a new account on SHOPZONE. Users can input their details and choose a secure password for account creation.
+The Sign-Up page allows users to create a new account on ROR-Ecom. Users can input their details and choose a secure password for account creation.
 
 ### SignUp using Github:
 ![SignUp using Github](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/0261abfa-a907-4ea8-aa2c-0d9ee520cee9)
 
-For seamless onboarding, SHOPZONE provides the option to sign up using a GitHub account. Users can quickly register by connecting their GitHub profiles.
+For seamless onboarding, ROR-Ecom provides the option to sign up using a GitHub account. Users can quickly register by connecting their GitHub profiles.
 
 ## OTP Verification
 
@@ -47,7 +47,7 @@ After initiating the sign-up process, users receive an email containing a One-Ti
 ### If enter the invalid OTP:
 ![Invalid OTP](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/8b3518f5-101f-4ba4-8627-134ad020e28f)
 
-In case the user enters an incorrect OTP, SHOPZONE provides a clear notification, prompting the user to re-enter the correct code for successful verification.
+In case the user enters an incorrect OTP, ROR-Ecom provides a clear notification, prompting the user to re-enter the correct code for successful verification.
 
 ### If Enter correct OTP:
 ![Correct OTP](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/f426438a-23db-4667-aa7a-3daf612e5a27)
@@ -110,7 +110,7 @@ Before making a purchase, users can review the selected product, ensuring a seam
 ### Make Payment Via Stripe Payment Gateway:
 ![Stripe Payment Gateway](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/9e33c569-e940-42b2-9c49-ef43ac70ee1f)
 
-SHOPZONE integrates with the Stripe Payment Gateway, providing a secure and efficient method for users to make online payments for their purchases.
+ROR-Ecom integrates with the Stripe Payment Gateway, providing a secure and efficient method for users to make online payments for their purchases.
 
 ### View Order After Successful Payment:
 ![View Order After Payment](https://github.com/YashSharma1101/ROR-Ecom-/assets/110088579/690e05e6-a723-401d-a264-3cfd549a1a68)
